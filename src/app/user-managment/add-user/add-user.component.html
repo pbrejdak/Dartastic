@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <mat-card>
+        <mat-card-title>{{ 'Add new player' }}</mat-card-title>
+        <div mat-card-image>
+          <img [src]="gravatarUrl" alt="User profile picture" />
+        </div>
+        <mat-card-content>
+          <form fxLayout="column" class="user-form" [formGroup]="userForm">
+            <mat-form-field appearance="outline">
+              <mat-label>Name</mat-label>
+              <input matInput type="text" formControlName="name" placeholder="Josh" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Surname</mat-label>
+              <input matInput type="text" formControlName="surname" placeholder="Doe" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Username</mat-label>
+              <input matInput type="text" formControlName="username" placeholder="josh.doe" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Gravatar Hash</mat-label>
+              <input matInput type="text" formControlName="gravatarUrl" placeholder="hash" />
+              <div matPrefix>https://www.gravatar.com/avatar/</div>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" [disabled]="userForm.invalid && !userForm.isDirty">Create</button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
