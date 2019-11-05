@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppShellComponent } from './app-shell/app-shell.component';
+import { LandingComponent } from './landing/landing.component';
 
 const routes: Routes = [
   {
@@ -10,6 +11,15 @@ const routes: Routes = [
       {
         path: 'user-managment',
         loadChildren: () => import('./user-managment/user-managment.module').then(mod => mod.UserManagmentModule)
+      },
+      {
+        path: 'landing',
+        component: LandingComponent
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'landing'
       }
     ]
   }
@@ -19,4 +29,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

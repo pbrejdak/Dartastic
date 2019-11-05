@@ -1,11 +1,6 @@
 <mat-sidenav-container class="example-container full-width full-height">
-  <mat-sidenav
-    #sidenav
-    mode="side"
-    [(opened)]="opened"
-    (opened)="events.push('open!')"
-    (closed)="events.push('close!')"
-  >
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened" (opened)="events.push('open!')"
+    (closed)="events.push('close!')">
     Sidenav content
   </mat-sidenav>
 
@@ -23,9 +18,11 @@
       <div class="example-events">
         <div *ngFor="let e of events">{{e}}</div>
       </div> -->
-      <div class="wrapper" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+      <!-- <div fxLayout="row" fxLayoutAlign="start stretch"> -->
+      <div class="wrapper" fxFlex>
         <router-outlet></router-outlet>
       </div>
+      <!-- </div> -->
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { ApiService, ApiKey } from '../../shared/api.service';
+import { UserManagmentService } from '../user-managment.service';
 
 @Component({
   selector: 'um-add-user',
@@ -8,7 +10,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./add-user.component.sass']
 })
 export class AddUserComponent implements OnInit {
-  constructor() {}
+  constructor(private userService: UserManagmentService) { }
 
   private subs: Subscription = new Subscription();
 
@@ -23,11 +25,21 @@ export class AddUserComponent implements OnInit {
       name: new FormControl('', Validators.required),
       surname: new FormControl('', Validators.required),
       username: new FormControl('', Validators.required),
-      gravatarUrl: new FormControl('', Validators.required)
+      gravatarHash: new FormControl('')
     });
+
+    // this.userForm.get('gravatarUrl').valueChanges(url => )
 
     // this.subs.add(
 
     // )
+
+  }
+
+  create() {
+    if (this.userForm.invalid || this.userForm.dirty) return;
+
+    const user = this.userForm.value;
+    // this.userService.createUser(user);
   }
 }

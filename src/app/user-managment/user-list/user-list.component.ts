@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserManagmentService } from '../user-managment.service';
 
 @Component({
   selector: 'um-user-list',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-list.component.sass']
 })
 export class UserListComponent implements OnInit {
-  constructor() {}
+  constructor(
+    public userService: UserManagmentService
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

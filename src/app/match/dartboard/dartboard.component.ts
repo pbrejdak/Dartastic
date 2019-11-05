@@ -10,7 +10,7 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, tap } from 'rxjs/operators';
 import { OnChanges } from '../../shared/classes/decorators/on-changes.decorator';
 
 const SEGMENT_REGEX = /((s|d|t){1}\d{1,2})|(Outer|Bull)/;
@@ -37,22 +37,23 @@ type SegmentId = string;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DartboardComponent implements OnInit, OnDestroy {
-  constructor() {}
+  constructor() { }
 
   private subs = new Subscription();
 
-  private selectedSegments: Map<SegmentId, number> = new Map<SegmentId, number>();
+  private selectedSegmentMap: Map<SegmentId, number> = new Map<SegmentId, number>();
+  private selectedSegments: string[] = [];
 
   @ViewChild('dartboard', { static: true }) dartboardRef: ElementRef<SVGElement>;
 
-  @OnChanges(function() {
+  @OnChanges(function () {
     console.log('change');
     this.updateDimensions();
   })
   @Input()
   width: string = '500px';
 
-  @OnChanges(function() {
+  @OnChanges(function () {
     console.log('change');
     this.updateDimensions();
   })
@@ -62,7 +63,7 @@ export class DartboardComponent implements OnInit, OnDestroy {
   @Input()
   throws: number = 3;
 
-  @Output() segmentSelected: EventEmitter<string> = new EventEmitter<string>();
+  @Output() segmentSelected: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   get dartboardElement(): SVGElement {
     return this.dartboardRef.nativeElement;
@@ -75,9 +76,13 @@ export class DartboardComponent implements OnInit, OnDestroy {
       boardClick
         .pipe(
           map(event => event.target as SVGPathElement),
-          filter(segment => SEGMENT_REGEX.test(segment.id))
+          filter(segment => SEGMENT_REGEX.test(segment.id)),
+          tap(segment => this.selectedSegments.push(segment.id)),
+          tap(segment => this.selectSegment(segment)),
+          filter(() => this.selectedSegments.length === this.throws),
+          tap(() => this.emitSelected())
         )
-        .subscribe(segment => this.onBoardClick(segment))
+        .subscribe()
     );
 
     // get all path elements and bull to bind for hover action
@@ -100,21 +105,24 @@ export class DartboardComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  private onBoardClick(segment: SVGPathElement) {
+  private selectSegment(segment: SVGPathElement) {
     const segmentId = segment.id;
     console.info(segmentId);
 
-    if (!this.selectedSegments.has(segmentId)) {
-      this.selectedSegments.set(segmentId, 0);
+    if (!this.selectedSegmentMap.has(segmentId)) {
+      this.selectedSegmentMap.set(segmentId, 0);
     }
 
-    let selectedTimes = this.selectedSegments.get(segmentId);
-    this.selectedSegments.set(segmentId, ++selectedTimes);
-
-    this.segmentSelected.emit(segmentId);
+    let selectedTimes = this.selectedSegmentMap.get(segmentId);
+    this.selectedSegmentMap.set(segmentId, ++selectedTimes);
 
     const opacity = selectedTimes * 0.3;
     segment.style.fill = `rgba(${SELECTION_RGB}, ${opacity.toString()})`;
+  }
+
+  private emitSelected() {
+    this.segmentSelected.emit([...this.selectedSegments]);
+    this.reset();
   }
 
   private updateDimensions() {
@@ -140,11 +148,12 @@ export class DartboardComponent implements OnInit, OnDestroy {
           return SEGMENT_COLOR_MAP.get(`triple${isEven}`);
       }
     };
-    this.selectedSegments.forEach((times, segmentId) => {
+    this.selectedSegmentMap.forEach((times, segmentId) => {
       const path = this.dartboardElement.querySelector<SVGPathElement>(`#${segmentId}`);
       path.style.fill = getSegmentColor(segmentId);
     });
 
-    this.selectedSegments.clear();
+    this.selectedSegmentMap.clear();
+    this.selectedSegments = [];
   }
 }
