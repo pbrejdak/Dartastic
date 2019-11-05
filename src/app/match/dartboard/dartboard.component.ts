@@ -12,6 +12,8 @@ import {
 import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, tap } from 'rxjs/operators';
 import { OnChanges } from '../../shared/classes/decorators/on-changes.decorator';
+import { segmentToPoints } from '../classes/helpers';
+import { Throw } from '../classes/models/throw.model';
 
 const SEGMENT_REGEX = /((s|d|t){1}\d{1,2})|(Outer|Bull)/;
 
@@ -37,7 +39,7 @@ type SegmentId = string;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DartboardComponent implements OnInit, OnDestroy {
-  constructor() { }
+  constructor() {}
 
   private subs = new Subscription();
 
@@ -46,14 +48,14 @@ export class DartboardComponent implements OnInit, OnDestroy {
 
   @ViewChild('dartboard', { static: true }) dartboardRef: ElementRef<SVGElement>;
 
-  @OnChanges(function () {
+  @OnChanges(function() {
     console.log('change');
     this.updateDimensions();
   })
   @Input()
   width: string = '500px';
 
-  @OnChanges(function () {
+  @OnChanges(function() {
     console.log('change');
     this.updateDimensions();
   })
@@ -63,7 +65,7 @@ export class DartboardComponent implements OnInit, OnDestroy {
   @Input()
   throws: number = 3;
 
-  @Output() segmentSelected: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() segmentSelected: EventEmitter<Throw[]> = new EventEmitter<Throw[]>();
 
   get dartboardElement(): SVGElement {
     return this.dartboardRef.nativeElement;
@@ -121,7 +123,8 @@ export class DartboardComponent implements OnInit, OnDestroy {
   }
 
   private emitSelected() {
-    this.segmentSelected.emit([...this.selectedSegments]);
+    const throws = this.selectedSegments.map(segmentToPoints);
+    this.segmentSelected.emit(throws);
     this.reset();
   }
 
