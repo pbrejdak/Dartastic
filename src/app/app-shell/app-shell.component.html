@@ -10,7 +10,9 @@
         <button mat-icon-button (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
-        {{ 'Darts' }}
+        <span routerLink="/landing" style="cursor: pointer;">
+          {{ 'Darts' }}
+        </span>
       </mat-toolbar>
       <!-- <p><mat-checkbox [(ngModel)]="opened">sidenav.opened</mat-checkbox></p>
       <p><button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button></p>

@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService, ApiKey } from '../shared/api.service';
 import { ReplaySubject, Observable } from 'rxjs';
-import { User } from './classes/models/user.model';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { User } from '../shared/classes/models/user.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserManagmentService {
 
   constructor(private api: ApiService) {
@@ -21,7 +19,19 @@ export class UserManagmentService {
     this.usersSource.next(users);
   }
 
+  private addUser(user: User) {
+    return this.usersSource.pipe(
+      switchMap(users => this.api.saveData<User[]>(ApiKey.USER, users.concat(user)))
+    );
+  }
+
   createUser(user: User) {
-    this.api.upsertUser(user)
+    return this.addUser(user)
+  }
+
+  getUser(userId: string) {
+    return this.users$.pipe(
+      map(users => users.find(u => u.username === userId))
+    );
   }
 }

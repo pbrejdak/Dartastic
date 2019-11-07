@@ -13,6 +13,10 @@ const routes: Routes = [
         loadChildren: () => import('./user-managment/user-managment.module').then(mod => mod.UserManagmentModule)
       },
       {
+        path: 'skirmish',
+        loadChildren: () => import('./skirmish/skirmish.module').then(mod => mod.SkirmishModule)
+      },
+      {
         path: 'landing',
         component: LandingComponent
       },

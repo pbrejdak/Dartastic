@@ -16,3 +16,35 @@ body {
 .full-height {
   height: 100%;
 }
+
+.fx-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.fx-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.fx-flex {
+  flex: 1 1;
+}
+
+.fx-space-between {
+  // align-content: space-between;
+  justify-content: space-between;
+}
+
+.fx-space-around {
+  justify-content: space-around;
+}
+
+.fx-center {
+  justify-content: center;
+}
+
+.fx-center-center {
+  justify-content: center;
+  align-items: center;
+}

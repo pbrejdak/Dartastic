@@ -1,4 +1,4 @@
-import { User } from 'src/app/user-managment/classes/models/user.model';
+import { User } from '../../../shared/classes/models/user.model';
 
 export interface PlayerResult {
   userId: string;

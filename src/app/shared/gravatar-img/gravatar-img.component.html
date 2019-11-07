@@ -1,0 +1,12 @@
+<div #container>
+  <ng-container *ngIf="hash$ | async as gravatarHash; else: noHash">
+    <img mat-card-image [src]="'https://www.gravatar.com/avatar/' + gravatarHash"
+      [alt]="'User gravatar profile picture'">
+  </ng-container>
+  <ng-template #noHash>
+    <div class="no-image fx-col fx-center-center" mat-card-image>
+      <mat-icon style="font-size: 40px; width: 40px; height: 40px">person_pin</mat-icon>
+    </div>
+    <!-- <img src="" alt=""> -->
+  </ng-template>
+</div>

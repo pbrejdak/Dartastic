@@ -11,12 +11,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { PlayerPickerComponent } from './player-picker/player-picker.component';
+import { ApiService } from './api.service';
+import { GravatarImgComponent } from './gravatar-img/gravatar-img.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [PlayerPickerComponent, GravatarImgComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -29,6 +34,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatAutocompleteModule,
+    MatTooltipModule,
     FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule
@@ -44,9 +51,15 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatAutocompleteModule,
+    MatTooltipModule,
     FlexLayoutModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    GravatarImgComponent
+  ],
+  providers: [
+    ApiService
   ]
 })
-export class SharedModule {}
+export class SharedModule { }

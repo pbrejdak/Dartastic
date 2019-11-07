@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +20,18 @@ export class ApiService {
       return of<T>(JSON.parse(localStorage.getItem(key)));
     }
 
-    return of<T>([]);
+    return of<T>([] as any);
   }
 
-  saveData(key: ApiKey, data: any) {
-    this.cacheMap.set(key, data);
-    localStorage.setItem(key, JSON.stringify(data));
+  saveData<T>(key: ApiKey, data: any) {
+    return of(null)
+      .pipe(
+        tap(() => {
+          this.cacheMap.set(key, data);
+          localStorage.setItem(key, JSON.stringify(data));
+        }),
+        map(() => data as T)
+      );
   }
 }
 

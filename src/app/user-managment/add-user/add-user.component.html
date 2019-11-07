@@ -3,9 +3,10 @@
     <div class="col-12">
       <mat-card>
         <mat-card-title>{{ 'Add new player' }}</mat-card-title>
-        <div mat-card-image>
-          <img [src]="gravatarUrl" alt="User profile picture" />
-        </div>
+        <!-- <div mat-card-image> -->
+        <!-- <img [src]="gravatarUrl" alt="User profile picture" /> -->
+        <!-- </div> -->
+        <app-gravatar-img [hash]="gravatarUrl"></app-gravatar-img>
         <mat-card-content>
           <form fxLayout="column" class="user-form" [formGroup]="userForm">
             <mat-form-field appearance="outline">

@@ -6,9 +6,12 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { SharedModule } from '../shared/shared.module';
+import { UserManagmentService } from './user-managment.service';
+import { UserResolve } from './user.resolve';
 
 @NgModule({
   declarations: [AddUserComponent, UserProfileComponent, UserListComponent],
-  imports: [CommonModule, UserManagmentRoutingModule, SharedModule]
+  imports: [CommonModule, UserManagmentRoutingModule, SharedModule],
+  providers: [UserManagmentService, UserResolve]
 })
-export class UserManagmentModule {}
+export class UserManagmentModule { }

@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from '../../user-managment/classes/models/user.model';
-import { UserPair } from '../classes/models/user-pair.model';
-import { GameMode } from '../classes/game-mode.enum';
 import { MatchService } from '../match.service';
+import { Throw } from '../classes/models/throw.model';
 
 @Component({
   selector: 'app-match',
@@ -18,7 +16,7 @@ export class MatchComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSegmentsSelected(segments: string[]) {
+  onSegmentsSelected(segments: Throw[]) {
     this.matchService.applyThrows(segments);
   }
 
