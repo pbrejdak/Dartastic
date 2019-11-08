@@ -1,0 +1,28 @@
+<section class="container player-order">
+  <div class="row">
+    <div class="col-12 fx-row fx-space-between fx-align-center">
+      <h1 class="title">{{ 'Set player order' }}</h1>
+      <div>
+        <button mat-raised-button color="primary" (click)="startGame()" [disabled]="!(canProceed$ | async)">
+          Start game
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-sm-6 col-md-3 user-box-col" *ngFor="let player of players">
+      <div class="user-box" (click)="pickOrder(player)">
+        <header class="fx-row">
+          <h1 class="player-name">{{ player.name }} {{ player.surname }}</h1>
+        </header>
+        <app-gravatar-img [hash]="player.gravatarHash"></app-gravatar-img>
+
+        <div class="player-order-circle">
+          <div class="player-order">
+            {{ player.order ? player.order : '?' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

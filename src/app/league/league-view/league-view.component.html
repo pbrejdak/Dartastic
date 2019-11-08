@@ -1,0 +1,27 @@
+<section class="container league-view">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="title">{{ league.name }} {{ league.winner ? 'Finished' : '' }}</h1>
+    </div>
+  </div>
+  <div class="row" *ngFor="let round of league.rounds">
+    <div class="col-12 col-sm-6 col-md-3" *ngFor="let match of round.matches">
+      <div class="player-match">
+        <div class="player-1" *ngFor="let player of match.players" [class.active]="match.winner === player">
+          {{ player }}
+        </div>
+      </div>
+      <button
+        *ngIf="!match.winner; else matchFinished"
+        mat-raised-button
+        color="primary"
+        (click)="startLeagueMatch(match)"
+      >
+        {{ 'Play match' }}
+      </button>
+      <ng-template #matchFinished>
+        {{ 'Match finished' }}
+      </ng-template>
+    </div>
+  </div>
+</section>

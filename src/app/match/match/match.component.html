@@ -1,1 +1,42 @@
-<app-dartboard (segmentSelected)="onSegmentsSelected($event)"></app-dartboard>
+<ng-container *ngIf="matchService.gameState$ | async as state">
+  <section class="container" *ngIf="isPlayState(state)">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12 fx-row fx-space-around">
+        <div class="scoreboard fx-col fx-center">
+          <div
+            class="player-result fx-row fx-align-center"
+            [class.active]="result.isPlaying"
+            *ngFor="let result of score$ | async"
+          >
+            <div class="score-item pointer">
+              <mat-icon>chevron_right</mat-icon>
+            </div>
+            <div class="score-item player-name">{{ result.displayName }}</div>
+            <div class="score-item player-sets" [matTooltip]="'Won sets'">{{ result.wonSets }}</div>
+            <div class="score-item player-legs" [matTooltip]="'Won legs'">{{ result.wonLegs }}</div>
+            <div class="score-item player-score-left" [matTooltip]="'Points left'">{{ result.pointsLeft }}</div>
+            <div
+              class="score-item player-score-throws-needed"
+              [matTooltip]="'Minimal amount of darts needed to finish leg'"
+            >
+              ({{ result.throwsNeeded }})
+            </div>
+            <div class="score-item player-last-average" [matTooltip]="'Average scored points from last 3 darts'">
+              {{ result.lastAverage }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div #dartboardContainer class="col-12 col-sm-12 col-sm-12">
+        <app-dartboard
+          [width]="dartboardWidth"
+          [height]="dartboardHeight"
+          (segmentSelected)="onSegmentsSelected($event)"
+        ></app-dartboard>
+      </div>
+    </div>
+    <!-- <div class="row" > -->
+    <!-- </div> -->
+  </section>
+  <app-player-order *ngIf="isPlayerOrderState(state)" [players]="matchService.players$ | async"></app-player-order>
+</ng-container>

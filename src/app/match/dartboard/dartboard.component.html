@@ -329,4 +329,13 @@
       />
     </g>
   </svg>
+  <div class="buttons fx-row fx-space-around" *ngIf="selectedSegments$ | async as segments">
+    <button mat-button (click)="resetThrows()" [disabled]="segments?.length === 0">{{ 'Reset' }}</button>
+    <button mat-button (click)="removeLastThrow()" [disabled]="segments?.length === 0">
+      {{ 'Remove last' }}
+    </button>
+    <button mat-raised-button color="primary" [disabled]="segments?.length !== throws" (click)="acceptThrows()">
+      {{ 'Accept' }}
+    </button>
+  </div>
 </section>

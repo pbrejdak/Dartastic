@@ -1,0 +1,65 @@
+<section class="player-picker container">
+  <div class="row">
+    <div class="col-12 fx-col">
+      <!-- USER SEARCH -->
+      <header class="search fx-row">
+        <mat-form-field class="user-search">
+          <input
+            type="text"
+            placeholder="Search player..."
+            aria-label="Search player"
+            matInput
+            [formControl]="playerSearchControl"
+            [matAutocomplete]="playerSearch"
+          />
+
+          <mat-autocomplete
+            #playerSearch="matAutocomplete"
+            (optionSelected)="playerOptionSelected($event)"
+            [displayWith]="playerSearchDisplayFn"
+          >
+            <mat-option class="player-search-option" *ngFor="let player of filteredPlayers$ | async" [value]="player">
+              <img [src]="player.gravatarHash" [alt]="'Player avatar'" />
+              <div class="player-details">
+                <div class="name">{{ player.name }} {{ player.surname }}</div>
+                <div class="username">
+                  {{ player.surname }}
+                </div>
+              </div>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </header>
+    </div>
+  </div>
+  <!-- USER LIST -->
+  <div class="row">
+    <div class="col-12">
+      <mat-chip-list class="fx-row">
+        <mat-chip *ngFor="let player of selectedPlayers$ | async">
+          <!-- <div class="user-box">
+            <header class="fx-row fx-space-between fx-align-center">
+              <div class="name">{{ player.name }} {{ player.surname }}</div>
+              <div class="remove">
+                <button mat-icon-button (click)="deletePlayer(player)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </div>
+            </header>
+          </div> -->
+
+          <!-- <img src="https://material.angularjs.org/material2_assets/ngconf/Husi.png" matChipAvatar> -->
+
+          <mat-icon matChipAvatar *ngIf="!player.gravatarHash">person_pin</mat-icon>
+          <img
+            [src]="'https://www.gravatar.com/avatar/' + player.gravatarHash"
+            matChipAvatar
+            *ngIf="player.gravatarHash"
+          />
+          {{ player.name }} {{ player.surname }}
+          <mat-icon matChipRemove (click)="deletePlayer(player)">cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </div>
+</section>

@@ -2,14 +2,20 @@
   <div class="row">
     <div class="col-12">
       <mat-card>
-        <mat-card-title>
-          {{user.name}} {{user.surname}}
-        </mat-card-title>
+        <mat-card-title> {{ user.name }} {{ user.surname }} </mat-card-title>
         <!-- <img mat-card-image [src]="'https://www.gravatar.com/avatar/' + user.gravatarHash" alt="User avatar"> -->
         <app-gravatar-img [hash]="user.gravatarHash"></app-gravatar-img>
         <!-- <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
           <button mat-raised-button routerLink="../profile/{{user.username}}" color="primary">{{'See profile'}}</button>
         </mat-card-actions> -->
+
+        <div *ngIf="history?.length === 0">{{ 'No match played yet' }}</div>
+        <div class="match-result" *ngFor="let result of history">
+          <header>
+            Match: {{ result.type }}, FinishedAt: {{ result.finishedAt | date }}
+            {{ result.winner === user.username ? 'Won' : 'Lose' }}
+          </header>
+        </div>
       </mat-card>
     </div>
   </div>

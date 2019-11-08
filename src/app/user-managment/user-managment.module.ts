@@ -8,10 +8,11 @@ import { UserListComponent } from './user-list/user-list.component';
 import { SharedModule } from '../shared/shared.module';
 import { UserManagmentService } from './user-managment.service';
 import { UserResolve } from './user.resolve';
+import { UserHistoryResolve } from './user-history.resolve';
 
 @NgModule({
   declarations: [AddUserComponent, UserProfileComponent, UserListComponent],
   imports: [CommonModule, UserManagmentRoutingModule, SharedModule],
-  providers: [UserManagmentService, UserResolve]
+  providers: [UserManagmentService, UserResolve, UserHistoryResolve]
 })
-export class UserManagmentModule { }
+export class UserManagmentModule {}

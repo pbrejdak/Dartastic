@@ -17,6 +17,10 @@ const routes: Routes = [
         loadChildren: () => import('./skirmish/skirmish.module').then(mod => mod.SkirmishModule)
       },
       {
+        path: 'league',
+        loadChildren: () => import('./league/league.module').then(mod => mod.LeagueModule)
+      },
+      {
         path: 'landing',
         component: LandingComponent
       },
@@ -30,7 +34,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,0 +1,30 @@
+<section class="league-list container">
+  <div class="row">
+    <div class="col-12 fx-row fx-align-center fx-space-between">
+      <h1 class="title">{{ 'League list' }}</h1>
+      <button mat-raised-button color="primary" routerLink="../add">
+        {{ 'Add new league' }}
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div
+      class="col-12 col-sm-6 col-md-3"
+      *ngFor="let league of leagueService.leagues$ | async"
+      routerLink="../view/{{ league.id }}"
+    >
+      <div class="league-item">
+        <h1 class="title">
+          {{ league.name }}
+        </h1>
+        <div class="fx-col">
+          <p>players: {{ getPlayers(league.config.players) }}</p>
+          <p>mode: {{ getGameModeName(league.config.mode) }}</p>
+          <p>leg legnth: {{ league.config.legLength }}</p>
+          <p>legs needed to finish set: {{ league.config.legsNeededToFinish }}</p>
+          <p>sets needed to finish match: {{ league.config.setsNeededToFinish }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

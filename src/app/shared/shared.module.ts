@@ -16,12 +16,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { PlayerPickerComponent } from './player-picker/player-picker.component';
 import { ApiService } from './api.service';
 import { GravatarImgComponent } from './gravatar-img/gravatar-img.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [PlayerPickerComponent, GravatarImgComponent],
+  declarations: [GravatarImgComponent, ConfirmationDialogComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -38,6 +39,7 @@ import { GravatarImgComponent } from './gravatar-img/gravatar-img.component';
     MatTooltipModule,
     FlexLayoutModule,
     ReactiveFormsModule,
+    MatDialogModule,
     FormsModule
   ],
   exports: [
@@ -56,10 +58,10 @@ import { GravatarImgComponent } from './gravatar-img/gravatar-img.component';
     FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
-    GravatarImgComponent
+    GravatarImgComponent,
+    ConfirmationDialogComponent
   ],
-  providers: [
-    ApiService
-  ]
+  providers: [ApiService],
+  entryComponents: [ConfirmationDialogComponent]
 })
-export class SharedModule { }
+export class SharedModule {}

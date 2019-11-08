@@ -7,9 +7,10 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
 } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent, Subscription, ReplaySubject } from 'rxjs';
 import { map, filter, tap } from 'rxjs/operators';
 import { OnChanges } from '../../shared/classes/decorators/on-changes.decorator';
 import { segmentToPoints } from '../classes/helpers';
@@ -39,12 +40,14 @@ type SegmentId = string;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DartboardComponent implements OnInit, OnDestroy {
-  constructor() {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   private subs = new Subscription();
 
   private selectedSegmentMap: Map<SegmentId, number> = new Map<SegmentId, number>();
   private selectedSegments: string[] = [];
+
+  selectedSegments$: ReplaySubject<string[]> = new ReplaySubject<string[]>();
 
   @ViewChild('dartboard', { static: true }) dartboardRef: ElementRef<SVGElement>;
 
@@ -71,18 +74,23 @@ export class DartboardComponent implements OnInit, OnDestroy {
     return this.dartboardRef.nativeElement;
   }
 
+  get canAccept(): boolean {
+    return this.selectedSegments && this.selectedSegments.length === 3;
+  }
+
   ngOnInit() {
     const boardClick = fromEvent<MouseEvent>(this.dartboardElement, 'click');
 
     this.subs.add(
       boardClick
         .pipe(
+          filter(() => this.selectedSegments.length < this.throws),
           map(event => event.target as SVGPathElement),
           filter(segment => SEGMENT_REGEX.test(segment.id)),
           tap(segment => this.selectedSegments.push(segment.id)),
-          tap(segment => this.selectSegment(segment)),
-          filter(() => this.selectedSegments.length === this.throws),
-          tap(() => this.emitSelected())
+          tap(segment => this.selectSegment(segment))
+          // tap(() => this.emitSelected())
+          // tap(() => this.cdr.markForCheck())
         )
         .subscribe()
     );
@@ -120,6 +128,8 @@ export class DartboardComponent implements OnInit, OnDestroy {
 
     const opacity = selectedTimes * 0.3;
     segment.style.fill = `rgba(${SELECTION_RGB}, ${opacity.toString()})`;
+
+    this.selectedSegments$.next(this.selectedSegments);
   }
 
   private emitSelected() {
@@ -158,5 +168,27 @@ export class DartboardComponent implements OnInit, OnDestroy {
 
     this.selectedSegmentMap.clear();
     this.selectedSegments = [];
+    this.selectedSegments$.next([]);
+  }
+
+  resetThrows() {
+    this.reset();
+  }
+
+  removeLastThrow() {
+    const throws = [...this.selectedSegments];
+    throws.pop();
+
+    this.reset();
+    throws.forEach(t => {
+      this.selectedSegments.push(t);
+      this.selectSegment(this.dartboardElement.querySelector(`#${t}`));
+    });
+  }
+
+  acceptThrows() {
+    if (this.selectedSegments.length === 3) {
+      this.emitSelected();
+    }
   }
 }

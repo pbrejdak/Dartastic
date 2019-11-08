@@ -1,0 +1,35 @@
+<section class="add-league container">
+  <mat-card>
+    <div class="row">
+      <div class="col-12">
+        <h1 class="tittle">{{ 'Add league' }}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <form [formGroup]="leagueForm">
+          <mat-form-field class="full-width">
+            <input matInput type="text" formControlName="name" placeholder="Name" />
+          </mat-form-field>
+
+          <div style="margin:0px -15px" *ngIf="!hideConfigurator; else matchConfigured">
+            <app-match-configurator
+              [isLeague]="true"
+              (configAccepted)="configAccepted($event)"
+            ></app-match-configurator>
+          </div>
+          <ng-template #matchConfigured>
+            <div style="margin-bottom: 15px;">
+              <h1 class="title">{{ 'Match configured' }}</h1>
+              <button mat-button (click)="resetConfiguration()">{{ 'Reset configuration' }}</button>
+            </div>
+          </ng-template>
+
+          <button mat-raised-button [disabled]="leagueForm.invalid" (click)="createLeague()">
+            {{ 'Create league' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </mat-card>
+</section>

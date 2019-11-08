@@ -1,0 +1,81 @@
+<section class="match-configurator container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="title">{{ 'Match configurator' }}</h1>
+      <mat-horizontal-stepper linear #stepper>
+        <mat-step [stepControl]="playersSelectGroup" [editable]="true">
+          <form [formGroup]="playersSelectGroup">
+            <ng-template matStepLabel>{{ 'Select players' }}</ng-template>
+            <app-player-picker [users]="users$ | async" (selectedPlayers)="playersSelected($event)"></app-player-picker>
+            <div class="footer-buttons">
+              <button mat-button matStepperNext [disabled]="playersSelectGroup.invalid">{{ 'Next' }}</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="rulesGroup" [editable]="true">
+          <form [formGroup]="rulesGroup" class="fx-col fx-start-stretch">
+            <ng-template matStepLabel>{{ 'Set rules' }}</ng-template>
+            <mat-form-field class="full-width">
+              <input matInput type="number" placeholder="Leg length" formControlName="legLength" required />
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                type="number"
+                placeholder="Legs needed to finish set"
+                formControlName="legsNeededToFinish"
+                required
+              />
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                type="number"
+                placeholder="Sets needed to finish set"
+                formControlName="setsNeededToFinish"
+                required
+              />
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Game mode" formControlName="mode" required>
+                <mat-option *ngFor="let option of gameModeOptions" [value]="option.value">{{ option.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <ng-container *ngIf="isLeague">
+              <mat-form-field class="full-width">
+                <input matInput type="number" placeholder="Total rounds for league" formControlName="rounds" required />
+              </mat-form-field>
+            </ng-container>
+
+            <div class="footer-buttons">
+              <button mat-button matStepperPrevious>{{ 'Back' }}</button>
+              <button mat-button matStepperNext [disabled]="rulesGroup.invalid">{{ 'Next' }}</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>{{ 'Done' }}</ng-template>
+          <section class="done-wrapper fx-col fx-align-center">
+            <div class="message-box fx-col fx-align-center">
+              <mat-icon class="success">check</mat-icon>
+              <h1 class="title">
+                {{ 'We are ready to start game.' }}
+              </h1>
+
+              <button class="start-game-button" mat-raised-button color="primary" (click)="acceptConfig()">
+                {{ 'Accept' }}
+              </button>
+            </div>
+            <div class="fx-row fx-space-between">
+              <div class="buttons">
+                <button mat-button matStepperPrevious>{{ 'Back' }}</button>
+                <button mat-button (click)="stepper.reset()">{{ 'Reset' }}</button>
+              </div>
+            </div>
+          </section>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </div>
+</section>

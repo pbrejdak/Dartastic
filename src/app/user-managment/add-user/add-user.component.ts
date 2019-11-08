@@ -11,7 +11,7 @@ import { User } from '../../shared/classes/models/user.model';
   styleUrls: ['./add-user.component.sass']
 })
 export class AddUserComponent implements OnInit {
-  constructor(private userService: UserManagmentService, private router: Router) { }
+  constructor(private userService: UserManagmentService, private router: Router) {}
 
   private subs: Subscription = new Subscription();
 
@@ -31,16 +31,18 @@ export class AddUserComponent implements OnInit {
   }
 
   create() {
-    if (this.userForm.invalid || !this.userForm.dirty) { return; }
+    if (this.userForm.invalid || !this.userForm.dirty) {
+      return;
+    }
 
     const user: User = this.userForm.value;
-    this.userService.createUser(user)
-      .subscribe(
-        res => {
-          this.userForm.reset();
-          this.router.navigate(['../', `profile/${user.username}`]);
-        }, err => {
-
-        });
+    user.wins = 0;
+    this.userService.createUser(user).subscribe(
+      res => {
+        this.userForm.reset();
+        this.router.navigate(['../', `profile/${user.username}`]);
+      },
+      err => {}
+    );
   }
 }

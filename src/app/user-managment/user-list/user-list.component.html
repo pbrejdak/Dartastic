@@ -1,26 +1,32 @@
 <section class="container user-list">
   <div class="row">
     <div class="col-12 fx-row fx-space-between">
-      <h1 class="title">{{'Player list'}}</h1>
+      <h1 class="title">{{ 'Player list' }}</h1>
       <div class="fx-row fx-center-center">
         <button mat-raised-button color="primary" routerLink="../add" [matTooltip]="'Add new player'">
-          <mat-icon>add</mat-icon> {{'Add new'}}
+          <mat-icon>add</mat-icon> {{ 'Add new' }}
         </button>
       </div>
     </div>
   </div>
   <div class="row" *ngIf="userService.users$ | async as users">
-    <ng-container *ngIf="users.length > 0; else: noUsers">
+    <ng-container *ngIf="users.length > 0; else noUsers">
       <div class="col-12 col-sm-6 col-md-3" *ngFor="let user of userService.users$ | async">
-        <mat-card>
-          <mat-card-title>
-            {{user.name}} {{user.surname}}
+        <mat-card class="user-item">
+          <mat-card-title style="margin-bottom: 25px" class="fx-row fx-align-center">
+            <div class="fx-row fx-space-between fx-align-center">
+              <div>{{ user.name }} {{ user.surname }}</div>
+              <button mat-button color="danger" (click)="deleteUser(user)" [matTooltip]="'Delete user'">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </mat-card-title>
           <!-- <img mat-card-image [src]="'https://www.gravatar.com/avatar/' + user.gravatarHash" alt="User avatar"> -->
-          <app-gravatar-img [hash]="user.gravatarHash" [adjustSize]=true></app-gravatar-img>
+          <app-gravatar-img [hash]="user.gravatarHash" [adjustSize]="true"></app-gravatar-img>
           <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
-            <button mat-raised-button routerLink="../profile/{{user.username}}"
-              color="primary">{{'See profile'}}</button>
+            <button mat-raised-button routerLink="../profile/{{ user.username }}" color="primary">
+              {{ 'See profile' }}
+            </button>
           </mat-card-actions>
         </mat-card>
       </div>
@@ -29,8 +35,8 @@
       <div class="col-12 fx-col fx-center-center">
         <div class="message-box fx-col fx-center-center">
           <mat-icon>sentiment_dissatisfied</mat-icon>
-          <div class="message">{{'No players to display'}}</div>
-          <button mat-raised-button color="primary" routerLink="../add">{{'Add new player'}}</button>
+          <div class="message">{{ 'No players to display' }}</div>
+          <button mat-raised-button color="primary" routerLink="../add">{{ 'Add new player' }}</button>
         </div>
       </div>
     </ng-template>

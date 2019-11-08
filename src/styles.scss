@@ -48,3 +48,28 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.fx-start-stretch {
+  align-items: flex-start;
+  justify-content: stretch;
+}
+
+.fx-align-center {
+  align-items: center;
+}
+
+.fx-align-stretch {
+  align-items: stretch;
+}
+
+.fx-align-start {
+  align-items: flex-start;
+}
+
+.fx-align-start {
+  align-items: flex-end;
+}
+
+.fx-wrap {
+  flex-wrap: wrap;
+}
